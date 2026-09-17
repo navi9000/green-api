@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router"
 import type { FC } from "react"
-import { LoginPage } from "@/pages/login"
+import { loginAction, LoginPage } from "@/pages/login"
 import { HomePage } from "@/pages/home"
 import { NotFoundPage } from "@/pages/not-found"
 
@@ -12,6 +12,7 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+    action: loginAction,
   },
   {
     path: "*",
