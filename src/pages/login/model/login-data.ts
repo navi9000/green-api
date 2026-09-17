@@ -11,6 +11,8 @@ type LoginActionErrors = Partial<
 
 export type LoginActionData = {
   errors?: LoginActionErrors
+  idInstance?: string
+  apiTokenInstance?: string
 }
 
 export type AuthorizationStatus =

@@ -38,7 +38,7 @@ export const loginAction = async ({ request }: { request: Request }) => {
     }
 
     return {
-      ...validatedData,
+      ...validatedData.data,
     }
   } catch {
     return {

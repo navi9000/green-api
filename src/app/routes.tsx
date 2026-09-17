@@ -3,15 +3,16 @@ import type { FC } from "react"
 import { loginAction, LoginPage } from "@/pages/login"
 import { HomePage } from "@/pages/home"
 import { NotFoundPage } from "@/pages/not-found"
+import { PublicRoute, PrivateRoute } from "@/features/auth"
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <PrivateRoute element={<HomePage />} />,
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: <PublicRoute element={<LoginPage />} />,
     action: loginAction,
   },
   {
