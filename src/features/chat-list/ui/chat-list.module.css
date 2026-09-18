@@ -6,3 +6,9 @@
   border-right: 1px solid var(--divider-secondary);
   z-index: 1;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 12px;
+}
