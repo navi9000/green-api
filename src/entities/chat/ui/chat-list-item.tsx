@@ -3,6 +3,7 @@ import type { Chat } from "../model/schema"
 import { Link, useParams } from "react-router"
 import styles from "./chat-list-item.module.css"
 import clsx from "clsx"
+import { Avatar } from "@/shared/ui"
 
 const ChatListItem: FC<Chat> = ({ phoneNumber }) => {
   const params = useParams()
@@ -19,7 +20,8 @@ const ChatListItem: FC<Chat> = ({ phoneNumber }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className={styles.avatar}></div>
+      {/* <div className={styles.avatar}></div> */}
+      <Avatar />
       <h3 className={styles.title}>{phoneNumber}</h3>
     </Link>
   )

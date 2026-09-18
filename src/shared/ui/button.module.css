@@ -12,6 +12,9 @@
   padding: 0;
   display: flex;
   position: relative;
+  width: var(--button-size);
+  min-width: var(--button-size);
+  height: var(--button-size);
 }
 
 .button__primary {
@@ -25,11 +28,26 @@
   --button-background-color-disabled: var(--states-button-primary-disabled);
 }
 
+.button__ghost {
+  --button-icon-color: var(--button-ghost-icon-color, var(--icon-primary));
+  --button-icon-color-disabled: var(
+    --button-ghost-icon-color-disabled,
+    var(--states-icon-primary-disabled)
+  );
+  --button-background-color: var(--button-ghost);
+  --button-background-color-hovered: var(--states-button-ghost-hover);
+  --button-background-color-pressed: var(--states-button-ghost-pressed);
+  --button-background-color-disabled: var(--states-button-ghost-disabled);
+}
+
+.button__small {
+  --button-border-radius: 18px;
+  --button-size: 40px;
+}
+
 .button__xsmall {
   --button-border-radius: 18px;
-  width: 32px;
-  min-width: 32px;
-  height: 32px;
+  --button-size: 32px;
 }
 
 .shape {

@@ -16,7 +16,7 @@ const ChatList: FC = () => {
       </div>
       <div>
         {chatList.map((data) => (
-          <ChatListItem {...data} />
+          <ChatListItem key={data.phoneNumber} {...data} />
         ))}
       </div>
     </aside>

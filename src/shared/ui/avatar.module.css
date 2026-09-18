@@ -1,0 +1,19 @@
+.avatar {
+  height: 100%;
+  margin-right: 12px;
+  grid-area: avatar;
+  align-items: center;
+  display: flex;
+  height: var(--avatar-size);
+  width: var(--avatar-size);
+  border-radius: 50%;
+  background-color: green;
+}
+
+.avatar__normal {
+  --avatar-size: 62px;
+}
+
+.avatar__small {
+  --avatar-size: 40px;
+}
