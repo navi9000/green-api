@@ -3,12 +3,19 @@ import { type Chat } from "./schema"
 import { ChatListContext } from "./chat-list-context"
 
 const ChatListProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [chatList] = useState<Chat[]>([
+  const [chatList, setChatList] = useState<Chat[]>([
     { chatId: null, phoneNumber: 79150000000 },
   ])
 
+  const addChat = (phoneNumber: number) => {
+    if (chatList.some((chat) => chat.phoneNumber === phoneNumber)) {
+      throw new Error("Уже добавлен")
+    }
+    setChatList((prev) => [{ chatId: null, phoneNumber }, ...prev])
+  }
+
   return (
-    <ChatListContext.Provider value={{ chatList }}>
+    <ChatListContext.Provider value={{ chatList, addChat }}>
       {children}
     </ChatListContext.Provider>
   )

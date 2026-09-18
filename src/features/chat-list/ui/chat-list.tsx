@@ -2,7 +2,7 @@ import type { FC } from "react"
 import styles from "./chat-list.module.css"
 import { useChatList } from "@/entities/chat"
 import { ChatListItem } from "@/entities/chat"
-import { Button } from "@/shared/ui"
+import AddChat from "./add-chat"
 
 const ChatList: FC = () => {
   const { chatList } = useChatList()
@@ -10,9 +10,7 @@ const ChatList: FC = () => {
     <aside className={styles.chatlistcontainer}>
       <div className={styles.header}>
         <h2>Chats</h2>
-        <Button palette="primary" size="xsmall">
-          <span style={{ fontSize: "24px" }}>+</span>
-        </Button>
+        <AddChat />
       </div>
       <div>
         {chatList.map((data) => (

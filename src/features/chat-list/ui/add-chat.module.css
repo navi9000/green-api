@@ -1,0 +1,17 @@
+.container {
+  position: relative;
+}
+
+.dialog {
+  position: absolute;
+  top: calc(100% + 16px);
+  right: 0;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: var(--background-primary);
+  box-shadow: 0 4px 40px 4px var(--shadow-glass-bar-color);
+}
+
+.dialogtitle {
+  white-space: nowrap;
+}
