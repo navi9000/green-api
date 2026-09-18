@@ -81,19 +81,3 @@
   -webkit-mask-size: auto;
   -webkit-mask-repeat: repeat;
 }
-
-.chatlistcontainer {
-  height: auto;
-  width: 393px;
-  background-color: var(--background-primary);
-  flex-grow: 0;
-  border-right: 1px solid var(--divider-secondary);
-  z-index: 1;
-}
-
-.chatcontainer {
-  flex: 1;
-  height: auto;
-  width: 100%;
-  background: transparent;
-}

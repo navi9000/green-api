@@ -1,0 +1,8 @@
+.chatlistcontainer {
+  height: auto;
+  width: 393px;
+  background-color: var(--background-primary);
+  flex-grow: 0;
+  border-right: 1px solid var(--divider-secondary);
+  z-index: 1;
+}

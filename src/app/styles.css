@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+a {
+  text-decoration: none;
+}
+
 :root {
   --background-surface: #0f0f12;
   --background-primary: #17181c;
@@ -566,4 +570,35 @@
   --states-bubbles-system-button-themed-disabled: #007aff7a;
   --technical-lottie-icon-tertiary: #65666b;
   --technical-black: #000;
+}
+
+:root {
+  font-family: var(--font);
+  --lightningcss-light: initial;
+  --lightningcss-dark: ;
+  color-scheme: light dark;
+  color: var(--text-primary);
+  background: var(--background-primary);
+  --font:
+    -apple-system, BlinkMacSystemFont, "Roboto", system-ui, Avenir, Helvetica,
+    Arial, sans-serif;
+  --outline-width: 2px;
+  --landing-bg: #0d0d0d;
+  --landing-text: #fff;
+  --border-radius-button-button-small: var(--border-radius-common-m-half);
+  --border-radius-button-button-medium: var(--border-radius-common-m);
+  --border-radius-button-button-large: var(--border-radius-common-l);
+  --z-index-layer-calls: 101;
+  --z-index-layer-popover: 200;
+  --z-index-layer-calls-participant-avatar: 1;
+  --z-index-layer-calls-participant-video: 2;
+  --z-index-layer-calls-participant-placeholder: 3;
+  --z-index-layer-calls-participant-utility: 4;
+  --z-index-popover-noPopoverAPI: 1000;
+  --ui-safe-area-top: env(safe-area-inset-top);
+  --ui-safe-area-right: env(safe-area-inset-right);
+  --ui-safe-area-bottom: calc(var(--size-10) + env(safe-area-inset-bottom));
+  --ui-safe-area-left: env(safe-area-inset-left);
+  font-weight: 400;
+  line-height: 1.5;
 }
