@@ -3,9 +3,7 @@ import { type Chat } from "./schema"
 import { ChatListContext } from "./chat-list-context"
 
 const ChatListProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [chatList, setChatList] = useState<Chat[]>([
-    { chatId: null, phoneNumber: 79150000000 },
-  ])
+  const [chatList, setChatList] = useState<Chat[]>([])
 
   const addChat = (phoneNumber: number) => {
     if (chatList.some((chat) => chat.phoneNumber === phoneNumber)) {

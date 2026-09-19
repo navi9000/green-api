@@ -1,0 +1,18 @@
+.inputfield {
+  background: #17181c;
+  border-radius: 16px;
+  box-shadow:
+    0px 4px 16px 0px var(--shadow-elevation-3-primary),
+    0px 0px 2px 0px var(--shadow-elevation-3-secondary);
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.input {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+}

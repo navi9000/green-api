@@ -2,6 +2,8 @@ import { useEffect, type FC } from "react"
 import { useFetcher } from "react-router"
 import type { LoginActionData } from "../model/login-data"
 import { useAuthContext } from "@/features/auth"
+import { Button, Input } from "@/shared/ui"
+import styles from "./LoginPage.module.css"
 
 const LoginPage: FC = () => {
   const { state, data, Form } = useFetcher<LoginActionData>()
@@ -18,20 +20,25 @@ const LoginPage: FC = () => {
   }, [authenticate, data])
 
   return (
-    <div>
-      <Form method="POST" autoComplete="off">
-        <div>Авторизация</div>
-        <input name="idInstance" placeholder="Введите ID" />
+    <div className={styles.page}>
+      <Form method="POST" autoComplete="off" className={styles.form}>
+        <h1>Авторизация</h1>
+        <Input name="idInstance" placeholder="Введите ID" />
         {!!data?.errors?.idInstance && (
           <div>{data.errors.idInstance.errors[0]}</div>
         )}
-        <input name="apiTokenInstance" placeholder="Введите токен" />
+        <Input name="apiTokenInstance" placeholder="Введите токен" />
         {!!data?.errors?.apiTokenInstance && (
           <div>{data.errors.apiTokenInstance.errors[0]}</div>
         )}
-        <button type="submit" disabled={state !== "idle"}>
-          Войти
-        </button>
+        <Button
+          size="small"
+          palette="primary"
+          type="submit"
+          disabled={state !== "idle"}
+        >
+          &rarr;
+        </Button>
       </Form>
     </div>
   )

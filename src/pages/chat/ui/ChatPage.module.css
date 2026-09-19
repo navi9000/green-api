@@ -1,6 +1,15 @@
 .container {
   z-index: 1;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrapper {
+  max-width: 708px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  width: 100%;
 }
 
 .header {
@@ -15,4 +24,14 @@
 .info {
   padding-inline: 8px;
   display: flex;
+}
+
+.chatcontainer {
+  flex: 1;
+}
+
+.inputcontainer {
+  flex-grow: 0;
+  flex-shrink: 0;
+  padding-bottom: 16px;
 }

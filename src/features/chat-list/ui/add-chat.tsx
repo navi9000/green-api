@@ -1,4 +1,4 @@
-import { Button } from "@/shared/ui"
+import { Button, Input } from "@/shared/ui"
 import {
   useState,
   type ChangeEventHandler,
@@ -34,6 +34,8 @@ const AddChat: FC = () => {
   const onAdd = () => {
     try {
       addChat(+phoneNumber)
+      setIsDialogVisible(false)
+      setPhoneNumber("")
     } catch (err) {
       if (err instanceof Error) {
         alert(err.message)
@@ -55,8 +57,15 @@ const AddChat: FC = () => {
       <Activity mode={isDialogVisible ? "visible" : "hidden"}>
         <div className={styles.dialog} ref={dialogRef}>
           <h4 className={styles.dialogtitle}>Введите номер телефона</h4>
-          <input value={phoneNumber} onChange={onChange} />
-          <button onClick={onAdd}>Добавить</button>
+          <Input
+            value={phoneNumber}
+            onChange={onChange}
+            rightSlot={
+              <Button palette="primary" size="xsmall" onClick={onAdd}>
+                &rarr;
+              </Button>
+            }
+          />
         </div>
       </Activity>
     </div>
