@@ -20,7 +20,6 @@ const ChatListItem: FC<Chat> = ({ phoneNumber }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* <div className={styles.avatar}></div> */}
       <Avatar />
       <h3 className={styles.title}>{phoneNumber}</h3>
     </Link>

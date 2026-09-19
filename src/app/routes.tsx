@@ -6,6 +6,7 @@ import { PublicRoute, PrivateRoute } from "@/features/auth"
 import { ChatPage } from "@/pages/chat"
 import { ChatListProvider } from "@/entities/chat"
 import { Background } from "@/shared/ui"
+import { MessageListProvider } from "@/entities/message"
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,9 @@ const router = createBrowserRouter([
       <PrivateRoute
         element={
           <ChatListProvider>
-            <Background />
+            <MessageListProvider>
+              <Background />
+            </MessageListProvider>
           </ChatListProvider>
         }
       />
