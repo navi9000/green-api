@@ -20,16 +20,30 @@ const ChatPage: FC = () => {
             <span>{phoneNumber}</span>
           </div>
         </div>
-        <div className={clsx(styles.chatcontainer, styles.wrapper)}></div>
-        <div className={clsx(styles.inputcontainer, styles.wrapper)}>
-          <Input
-            placeholder="Message..."
-            rightSlot={
-              <Button palette="primary" size="xsmall">
-                &uarr;
-              </Button>
-            }
-          />
+        <div className={styles.chatcontainer}>
+          <div className={clsx(styles.wrapper)}>
+            {Array.from({ length: 7 }, (_, index) => (
+              <div style={{ textAlign: "justify" }}>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem
+                accusantium nihil, quam repudiandae tempora blanditiis
+                consequatur quo, asperiores, cupiditate molestias praesentium
+                necessitatibus deleniti quia? Similique voluptates vel animi ab
+                magni? {index}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className={clsx(styles.inputcontainer)}>
+          <div className={styles.wrapper}>
+            <Input
+              placeholder="Message..."
+              rightSlot={
+                <Button palette="primary" size="xsmall">
+                  &uarr;
+                </Button>
+              }
+            />
+          </div>
         </div>
       </div>
     </>
