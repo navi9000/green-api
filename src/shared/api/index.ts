@@ -4,6 +4,7 @@ export type {
   ClientAuthData,
   ClientChat,
   ClientMessage,
+  IncomingMessageListener,
 } from "./client"
 export { createChatClient } from "./create-chat-client"
 export { HttpChatClient } from "./http-chat-client"

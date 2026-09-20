@@ -15,6 +15,11 @@ export type ClientMessage = {
   sender: "own" | "guest"
 }
 
+export type IncomingMessageListener = (
+  phoneNumber: string,
+  message: ClientMessage,
+) => void
+
 export type AuthorizationResult = {
   stateInstance:
     | "notAuthorized"
@@ -30,4 +35,5 @@ export type ChatClient = {
   logout: () => Promise<void>
   createChat: (phoneNumber: number) => Promise<ClientChat>
   sendMessage: (phoneNumber: string, text: string) => Promise<ClientMessage>
+  subscribeToIncomingMessages: (listener: IncomingMessageListener) => () => void
 }
