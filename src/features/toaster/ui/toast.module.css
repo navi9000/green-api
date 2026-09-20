@@ -1,0 +1,11 @@
+.toast {
+  border-radius: 10px;
+  padding: 8px 16px;
+  box-shadow: 0 0 20px 0 var(--shadow-glass-bar-color);
+  background: var(--button-primary);
+  color: var(--text-primary);
+  text-align: start;
+  letter-spacing: 0.04em;
+  inset-block-end: calc(100% + 12px);
+  width: max-content;
+}
