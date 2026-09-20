@@ -16,6 +16,7 @@ const AddMessage: FC = () => {
       id: Math.random().toString(),
       timestamp: Date.now(),
       text: message,
+      sender: "own",
     })
     setMessage("")
   }
