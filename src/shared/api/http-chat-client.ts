@@ -4,8 +4,17 @@ import type {
   ClientAuthData,
   ClientChat,
   ClientMessage,
+  ErrorReporter,
   IncomingMessageListener,
 } from "./client"
+
+type ApiErrorPayload = {
+  code?: unknown
+  message?: unknown
+  status?: unknown
+  invokeStatus?: { description?: unknown }
+  correspondentsStatus?: { description?: unknown }
+}
 
 type NotificationResponse = {
   receiptId: number
@@ -30,22 +39,39 @@ type NotificationResponse = {
 export type HttpChatClientOptions = {
   baseUrl: string
   fetcher?: typeof fetch
+  onError?: ErrorReporter
+}
+
+export class HttpChatError extends Error {
+  readonly status?: number
+  readonly code?: string
+
+  constructor(message: string, status?: number, code?: string) {
+    super(message)
+    this.name = "HttpChatError"
+    this.status = status
+    this.code = code
+  }
 }
 
 export class HttpChatClient implements ChatClient {
   private readonly baseUrl: string
   private readonly fetcher: typeof fetch
+  private readonly onError?: ErrorReporter
   private readonly incomingMessageListeners = new Set<IncomingMessageListener>()
   private idInstance: string
   private apiTokenInstance: string
   private isReceiving = false
+  private readonly reportedErrors = new Map<string, number>()
 
   constructor({
     baseUrl,
     fetcher = globalThis.fetch.bind(globalThis),
+    onError,
   }: HttpChatClientOptions) {
     this.baseUrl = baseUrl.replace(/\/$/, "")
     this.fetcher = fetcher
+    this.onError = onError
     this.idInstance = ""
     this.apiTokenInstance = ""
   }
@@ -57,12 +83,33 @@ export class HttpChatClient implements ChatClient {
     this.idInstance = idInstance
     this.apiTokenInstance = apiTokenInstance
 
-    return this.request<AuthorizationResult>(
+    const result = await this.request<unknown>(
       `/waInstance${idInstance}/getStateInstance/${apiTokenInstance}`,
       {
         method: "GET",
       },
     )
+
+    if (!this.isAuthorizationResult(result)) {
+      const error = new HttpChatError(
+        "Green API вернул некорректный ответ авторизации",
+        200,
+      )
+      this.reportError(error)
+      throw error
+    }
+
+    if (result.stateInstance !== "authorized") {
+      const error = new HttpChatError(
+        `Green API: состояние инстанса ${result.stateInstance}`,
+        200,
+        result.stateInstance,
+      )
+      this.reportError(error)
+      throw error
+    }
+
+    return result
   }
 
   async logout(): Promise<void> {
@@ -182,23 +229,135 @@ export class HttpChatClient implements ChatClient {
   }
 
   private async request<T>(path: string, init: RequestInit): Promise<T> {
-    const response = await this.fetcher(`${this.baseUrl}${path}`, {
-      ...init,
-      headers: {
-        "Content-Type": "application/json",
-        ...init.headers,
-      },
-    })
+    try {
+      const response = await this.fetcher(`${this.baseUrl}${path}`, {
+        ...init,
+        headers: {
+          "Content-Type": "application/json",
+          ...init.headers,
+        },
+      })
 
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`)
+      if (response.status === 204) {
+        return undefined as T
+      }
+
+      const responseText = await response.text()
+      const payload = this.parseResponseBody(responseText, response.status)
+
+      if (!response.ok || this.isErrorPayload(payload)) {
+        throw this.createApiError(response.status, payload)
+      }
+
+      return payload as T
+    } catch (error) {
+      const normalizedError = this.normalizeError(error, path)
+      this.reportError(normalizedError)
+      throw normalizedError
+    }
+  }
+
+  private parseResponseBody(responseText: string, status: number) {
+    if (!responseText) {
+      return undefined
     }
 
-    if (response.status === 204) {
-      return undefined as T
+    try {
+      return JSON.parse(responseText) as unknown
+    } catch {
+      if (status >= 200 && status < 300) {
+        throw new Error("The API returned an invalid response")
+      }
+      return responseText
+    }
+  }
+
+  private isErrorPayload(payload: unknown): payload is ApiErrorPayload {
+    if (!payload || typeof payload !== "object") {
+      return false
     }
 
-    const responseText = await response.text()
-    return (responseText ? JSON.parse(responseText) : undefined) as T
+    const candidate = payload as ApiErrorPayload
+    return (
+      candidate.status === "error" ||
+      (typeof candidate.code === "string" &&
+        typeof candidate.message === "string")
+    )
+  }
+
+  private isAuthorizationResult(
+    payload: unknown,
+  ): payload is AuthorizationResult {
+    if (!payload || typeof payload !== "object") {
+      return false
+    }
+
+    const stateInstance = (payload as { stateInstance?: unknown }).stateInstance
+    return (
+      stateInstance === "notAuthorized" ||
+      stateInstance === "authorized" ||
+      stateInstance === "blocked" ||
+      stateInstance === "starting" ||
+      stateInstance === "suspended" ||
+      stateInstance === "pendingPassword"
+    )
+  }
+
+  private createApiError(status: number, payload: unknown) {
+    const candidate = this.isErrorPayload(payload) ? payload : undefined
+    const description =
+      candidate?.invokeStatus?.description ??
+      candidate?.correspondentsStatus?.description
+    const message =
+      typeof description === "string"
+        ? description
+        : typeof candidate?.message === "string"
+          ? candidate.message
+          : this.getStatusMessage(status)
+    const code =
+      typeof candidate?.code === "string" ? candidate.code : undefined
+
+    return new HttpChatError(message, status, code)
+  }
+
+  private normalizeError(error: unknown, path: string) {
+    if (error instanceof HttpChatError) {
+      return error
+    }
+
+    const message = error instanceof Error ? error.message : "Unknown API error"
+    return new HttpChatError(`${path}: ${message}`)
+  }
+
+  private getStatusMessage(status: number) {
+    const messages: Record<number, string> = {
+      400: "Некорректный запрос к Green API",
+      401: "Неверный токен Green API",
+      403: "Неверный idInstance или URL запроса Green API",
+      404: "Метод Green API не найден",
+      429: "Превышен лимит запросов Green API",
+      466: "Превышена квота Green API",
+      499: "Запрос к Green API был прерван",
+      500: "Внутренняя ошибка Green API",
+      502: "Green API временно недоступен",
+    }
+
+    return messages[status] ?? `Ошибка Green API (${status})`
+  }
+
+  private reportError(error: HttpChatError) {
+    if (!this.onError) {
+      return
+    }
+
+    const key = `${error.status ?? "network"}:${error.code ?? ""}:${error.message}`
+    const now = Date.now()
+    const lastReportedAt = this.reportedErrors.get(key) ?? 0
+    if (now - lastReportedAt < 5_000) {
+      return
+    }
+
+    this.reportedErrors.set(key, now)
+    this.onError(error)
   }
 }

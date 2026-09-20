@@ -2,12 +2,14 @@ import { useEffect, type FC } from "react"
 import { useFetcher } from "react-router"
 import type { LoginActionData } from "../model/login-data"
 import { useAuthContext } from "@/features/auth"
+import { useAddToast } from "@/features/toaster"
 import { Button, Input } from "@/shared/ui"
 import styles from "./LoginPage.module.css"
 
 const LoginPage: FC = () => {
   const { state, data, Form } = useFetcher<LoginActionData>()
   const { authenticate } = useAuthContext()
+  const addToast = useAddToast()
 
   useEffect(() => {
     if (!data || !data.idInstance || !data.apiTokenInstance) {
@@ -18,6 +20,13 @@ const LoginPage: FC = () => {
       apiTokenInstance: data.apiTokenInstance,
     })
   }, [authenticate, data])
+
+  useEffect(() => {
+    const message = data?.errors?.system?.errors[0]
+    if (message) {
+      addToast({ message })
+    }
+  }, [addToast, data])
 
   return (
     <div className={styles.page}>

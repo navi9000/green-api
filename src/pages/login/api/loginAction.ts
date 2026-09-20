@@ -42,12 +42,6 @@ export const loginAction = async ({
       ...validatedData.data,
     }
   } catch {
-    return {
-      errors: {
-        system: {
-          errors: ["Unknown error"],
-        },
-      },
-    }
+    return {}
   }
 }

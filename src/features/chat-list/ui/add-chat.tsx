@@ -9,10 +9,13 @@ import {
 import styles from "./add-chat.module.css"
 import { useChatList } from "@/entities/chat"
 import { useClickOutside } from "@/shared/utils"
+import { useAddToast } from "@/features/toaster"
+import { HttpChatError } from "@/shared/api"
 
 const AddChat: FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("")
   const { addChat } = useChatList()
+  const addToast = useAddToast()
   const [isDialogVisible, setIsDialogVisible] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -36,9 +39,9 @@ const AddChat: FC = () => {
       await addChat(+phoneNumber)
       setIsDialogVisible(false)
       setPhoneNumber("")
-    } catch (err) {
-      if (err instanceof Error) {
-        alert(err.message)
+    } catch (error) {
+      if (!(error instanceof HttpChatError) && error instanceof Error) {
+        addToast({ message: error.message })
       }
     }
   }

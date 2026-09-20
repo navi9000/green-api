@@ -20,6 +20,8 @@ export type IncomingMessageListener = (
   message: ClientMessage,
 ) => void
 
+export type ErrorReporter = (error: Error) => void
+
 export type AuthorizationResult = {
   stateInstance:
     | "notAuthorized"
