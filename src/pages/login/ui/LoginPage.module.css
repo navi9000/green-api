@@ -17,3 +17,24 @@
   align-items: center;
   padding: 16px;
 }
+
+.title {
+  font-size: 24px;
+}
+
+.input {
+  width: 100%;
+}
+
+.error {
+  width: 100%;
+  color: #ff4d4f;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}

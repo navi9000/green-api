@@ -1,8 +1,14 @@
 import z from "zod"
 
 const loginSchema = z.object({
-  idInstance: z.string("Введите idInstance").trim(),
-  apiTokenInstance: z.string("Введите apiTokenInstance").trim(),
+  idInstance: z
+    .string("Введите idInstance")
+    .length(12, "Длина idInstance должна составлять 12 символов")
+    .trim(),
+  apiTokenInstance: z
+    .string("Введите apiTokenInstance")
+    .min(10, "apiTokenInstance слишком короткий")
+    .trim(),
 })
 
 type LoginActionErrors = Partial<

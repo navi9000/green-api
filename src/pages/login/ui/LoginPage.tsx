@@ -22,23 +22,36 @@ const LoginPage: FC = () => {
   return (
     <div className={styles.page}>
       <Form method="POST" autoComplete="off" className={styles.form}>
-        <h1>Авторизация</h1>
-        <Input name="idInstance" placeholder="Введите ID" />
+        <h1 className={styles.title}>Авторизация</h1>
+        <Input
+          className={styles.input}
+          name="idInstance"
+          placeholder="Введите idInstance"
+        />
         {!!data?.errors?.idInstance && (
-          <div>{data.errors.idInstance.errors[0]}</div>
+          <div className={styles.error}>{data.errors.idInstance.errors[0]}</div>
         )}
-        <Input name="apiTokenInstance" placeholder="Введите токен" />
+        <Input
+          className={styles.input}
+          name="apiTokenInstance"
+          placeholder="Введите apiTokenInstance"
+        />
         {!!data?.errors?.apiTokenInstance && (
-          <div>{data.errors.apiTokenInstance.errors[0]}</div>
+          <div className={styles.error}>
+            {data.errors.apiTokenInstance.errors[0]}
+          </div>
         )}
-        <Button
-          size="small"
-          palette="primary"
-          type="submit"
-          disabled={state !== "idle"}
-        >
-          &rarr;
-        </Button>
+        <div className={styles.actions}>
+          <span>Войти</span>
+          <Button
+            size="small"
+            palette="primary"
+            type="submit"
+            disabled={state !== "idle"}
+          >
+            &rarr;
+          </Button>
+        </div>
       </Form>
     </div>
   )
