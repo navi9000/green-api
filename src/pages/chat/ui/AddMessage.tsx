@@ -26,7 +26,12 @@ const AddMessage: FC = () => {
       onChange={(e) => setMessage(e.target.value)}
       placeholder="Message..."
       rightSlot={
-        <Button palette="primary" size="xsmall" onClick={saveMessage}>
+        <Button
+          palette="primary"
+          size="xsmall"
+          onClick={saveMessage}
+          disabled={message.trim() === ""}
+        >
           &uarr;
         </Button>
       }

@@ -17,6 +17,10 @@
   height: var(--button-size);
 }
 
+.button:disabled {
+  cursor: not-allowed;
+}
+
 .button__primary {
   --button-icon-color: var(--icon-primary-inverse-static) #fff;
   --button-icon-color-disabled: var(

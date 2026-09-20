@@ -61,7 +61,12 @@ const AddChat: FC = () => {
             value={phoneNumber}
             onChange={onChange}
             rightSlot={
-              <Button palette="primary" size="xsmall" onClick={onAdd}>
+              <Button
+                palette="primary"
+                size="xsmall"
+                onClick={onAdd}
+                disabled={phoneNumber.trim() === ""}
+              >
                 &rarr;
               </Button>
             }

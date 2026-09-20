@@ -10,6 +10,9 @@
   border-radius: 8px;
   background-color: var(--background-primary);
   box-shadow: 0 4px 40px 4px var(--shadow-glass-bar-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .dialogtitle {
