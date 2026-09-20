@@ -7,41 +7,45 @@ import { ChatPage } from "@/pages/chat"
 import { ChatListProvider } from "@/entities/chat"
 import { Background } from "@/shared/ui"
 import { MessageListProvider } from "@/entities/message"
+import type { ChatClient } from "@/shared/api"
 
-const router = createBrowserRouter([
-  {
-    path: "/login",
-    element: <PublicRoute element={<LoginPage />} />,
-    action: loginAction,
-  },
-  {
-    path: "/",
-    element: (
-      <PrivateRoute
-        element={
-          <ChatListProvider>
-            <MessageListProvider>
-              <Background />
-            </MessageListProvider>
-          </ChatListProvider>
-        }
-      />
-    ),
-    children: [
-      {
-        path: "/",
-        element: <PrivateRoute element={<HomePage />} />,
-      },
-      {
-        path: "/:phoneNumber",
-        element: <PrivateRoute element={<ChatPage />} />,
-      },
-    ],
-  },
-])
+const createRouter = (client: ChatClient) =>
+  createBrowserRouter([
+    {
+      path: "/login",
+      element: <PublicRoute element={<LoginPage />} />,
+      action: ({ request }) => loginAction({ request, client }),
+    },
+    {
+      path: "/",
+      element: (
+        <PrivateRoute
+          element={
+            <ChatListProvider client={client}>
+              <MessageListProvider client={client}>
+                <Background />
+              </MessageListProvider>
+            </ChatListProvider>
+          }
+        />
+      ),
+      children: [
+        {
+          path: "/",
+          element: <PrivateRoute element={<HomePage />} />,
+        },
+        {
+          path: "/:phoneNumber",
+          element: <PrivateRoute element={<ChatPage />} />,
+        },
+      ],
+    },
+  ])
 
-const Routes: FC = () => {
-  return <RouterProvider router={router} />
+type Props = { client: ChatClient }
+
+const Routes: FC<Props> = ({ client }) => {
+  return <RouterProvider router={createRouter(client)} />
 }
 
 export default Routes

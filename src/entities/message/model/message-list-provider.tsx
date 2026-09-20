@@ -1,18 +1,22 @@
 import { useState, type FC, type PropsWithChildren } from "react"
 import { MessageListContext } from "./message-list-context"
 import type { Message, MessageListContextProps } from "./schema"
+import type { ChatClient } from "@/shared/api"
 
-const MessageListProvider: FC<PropsWithChildren> = ({ children }) => {
+type Props = PropsWithChildren<{ client: ChatClient }>
+
+const MessageListProvider: FC<Props> = ({ children, client }) => {
   const [chatList, setChatList] = useState<MessageListContextProps["chatList"]>(
     {},
   )
 
-  const addMessage = (phoneNumber: string, message: Message) => {
+  const addMessage = async (phoneNumber: string, text: string) => {
+    const message: Message = await client.sendMessage(phoneNumber, text)
     const messageList = chatList[phoneNumber] ?? []
-    messageList.push(message)
+    const nextMessageList = [...messageList, message]
     setChatList((prev) => ({
       ...prev,
-      [phoneNumber]: messageList,
+      [phoneNumber]: nextMessageList,
     }))
   }
 

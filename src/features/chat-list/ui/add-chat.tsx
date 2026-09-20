@@ -31,16 +31,15 @@ const AddChat: FC = () => {
     setIsDialogVisible((prev) => !prev)
   }
 
-  const onAdd = () => {
+  const onAdd = async () => {
     try {
-      addChat(+phoneNumber)
+      await addChat(+phoneNumber)
       setIsDialogVisible(false)
       setPhoneNumber("")
     } catch (err) {
       if (err instanceof Error) {
         alert(err.message)
       }
-      throw err
     }
   }
 

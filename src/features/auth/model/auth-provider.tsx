@@ -4,8 +4,11 @@ import {
   type AuthContextParams,
 } from "./auth-context"
 import { useState, type FC, type PropsWithChildren } from "react"
+import type { ChatClient } from "@/shared/api"
 
-const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
+type Props = PropsWithChildren<{ client: ChatClient }>
+
+const AuthProvider: FC<Props> = ({ children, client }) => {
   const [isAuth, setIsAuth] = useState(false)
   const [authData, setAuthData] = useState<AuthData | null>(null)
 
@@ -15,6 +18,7 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const logout = () => {
+    void client.logout()
     setIsAuth(false)
     setAuthData(null)
   }

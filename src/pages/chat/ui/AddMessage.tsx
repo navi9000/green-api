@@ -8,16 +8,11 @@ const AddMessage: FC = () => {
   const { phoneNumber } = useParams()
   const { addMessage } = useMessageListContext()
 
-  const saveMessage = () => {
+  const saveMessage = async () => {
     if (!phoneNumber || !message.trim()) {
       return
     }
-    addMessage(phoneNumber, {
-      id: Math.random().toString(),
-      timestamp: Date.now(),
-      text: message,
-      sender: "own",
-    })
+    await addMessage(phoneNumber, message)
     setMessage("")
   }
   return (

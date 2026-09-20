@@ -1,15 +1,16 @@
 import { useState, type FC, type PropsWithChildren } from "react"
 import { type Chat } from "./schema"
 import { ChatListContext } from "./chat-list-context"
+import type { ChatClient } from "@/shared/api"
 
-const ChatListProvider: FC<PropsWithChildren> = ({ children }) => {
+type Props = PropsWithChildren<{ client: ChatClient }>
+
+const ChatListProvider: FC<Props> = ({ children, client }) => {
   const [chatList, setChatList] = useState<Chat[]>([])
 
-  const addChat = (phoneNumber: number) => {
-    if (chatList.some((chat) => chat.phoneNumber === phoneNumber)) {
-      throw new Error("Уже добавлен")
-    }
-    setChatList((prev) => [{ chatId: null, phoneNumber }, ...prev])
+  const addChat = async (phoneNumber: number) => {
+    const chat = await client.createChat(phoneNumber)
+    setChatList((prev) => [chat, ...prev])
   }
 
   return (

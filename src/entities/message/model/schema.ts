@@ -9,5 +9,5 @@ export type MessageListContextProps = {
   chatList: {
     [phoneNumber: string]: Message[]
   }
-  addMessage: (phoneNumber: string, message: Message) => void
+  addMessage: (phoneNumber: string, text: string) => Promise<void>
 }

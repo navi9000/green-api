@@ -1,18 +1,19 @@
-import loginSchema, { type LoginRequest } from "../model/login-data"
+import loginSchema from "../model/login-data"
 import z from "zod"
-
-export const mockLoginRequest: LoginRequest = async () => {
-  return await Promise.resolve({
-    stateInstance: "authorized",
-  })
-}
+import type { ChatClient } from "@/shared/api"
 
 export const parseLoginForm = (formData: FormData) => ({
   idInstance: formData.get("idInstance"),
   apiTokenInstance: formData.get("apiTokenInstance"),
 })
 
-export const loginAction = async ({ request }: { request: Request }) => {
+export const loginAction = async ({
+  request,
+  client,
+}: {
+  request: Request
+  client: ChatClient
+}) => {
   const formData = await request.formData()
   const credentials = parseLoginForm(formData)
 
@@ -26,7 +27,7 @@ export const loginAction = async ({ request }: { request: Request }) => {
   }
 
   try {
-    const { stateInstance } = await mockLoginRequest(validatedData.data)
+    const { stateInstance } = await client.authorize(validatedData.data)
     if (stateInstance !== "authorized") {
       return {
         errors: {
