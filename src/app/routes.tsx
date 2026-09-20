@@ -10,37 +10,40 @@ import { MessageListProvider } from "@/entities/message"
 import type { ChatClient } from "@/shared/api"
 
 const createRouter = (client: ChatClient) =>
-  createBrowserRouter([
-    {
-      path: "/login",
-      element: <PublicRoute element={<LoginPage />} />,
-      action: ({ request }) => loginAction({ request, client }),
-    },
-    {
-      path: "/",
-      element: (
-        <PrivateRoute
-          element={
-            <ChatListProvider client={client}>
-              <MessageListProvider client={client}>
-                <Background />
-              </MessageListProvider>
-            </ChatListProvider>
-          }
-        />
-      ),
-      children: [
-        {
-          path: "/",
-          element: <PrivateRoute element={<HomePage />} />,
-        },
-        {
-          path: "/:phoneNumber",
-          element: <PrivateRoute element={<ChatPage />} />,
-        },
-      ],
-    },
-  ])
+  createBrowserRouter(
+    [
+      {
+        path: "/login",
+        element: <PublicRoute element={<LoginPage />} />,
+        action: ({ request }) => loginAction({ request, client }),
+      },
+      {
+        path: "/",
+        element: (
+          <PrivateRoute
+            element={
+              <ChatListProvider client={client}>
+                <MessageListProvider client={client}>
+                  <Background />
+                </MessageListProvider>
+              </ChatListProvider>
+            }
+          />
+        ),
+        children: [
+          {
+            path: "/",
+            element: <PrivateRoute element={<HomePage />} />,
+          },
+          {
+            path: "/:phoneNumber",
+            element: <PrivateRoute element={<ChatPage />} />,
+          },
+        ],
+      },
+    ],
+    { basename: import.meta.env.BASE_URL },
+  )
 
 type Props = { client: ChatClient }
 
