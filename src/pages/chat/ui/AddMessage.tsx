@@ -1,4 +1,4 @@
-import { useMessageList } from "@/entities/message/model/use-message-list"
+import { useMessageListContext } from "@/entities/message/model/use-message-list-context"
 import { Button, Input } from "@/shared/ui"
 import { useState, type FC } from "react"
 import { useParams } from "react-router"
@@ -6,7 +6,7 @@ import { useParams } from "react-router"
 const AddMessage: FC = () => {
   const [message, setMessage] = useState("")
   const { phoneNumber } = useParams()
-  const { addMessage } = useMessageList()
+  const { addMessage } = useMessageListContext()
 
   const saveMessage = () => {
     if (!phoneNumber || !message.trim()) {

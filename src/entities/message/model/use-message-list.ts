@@ -1,10 +1,9 @@
-import { use } from "react"
-import { MessageListContext } from "./message-list-context"
+import { useMessageListContext } from "./use-message-list-context"
 
-export function useMessageList() {
-  const context = use(MessageListContext)
-  if (!context) {
-    throw new Error("useMessageList must be under MessageListContext")
+export function useMessageList(phoneNumber: string) {
+  const { chatList } = useMessageListContext()
+
+  return {
+    length: chatList[phoneNumber]?.length ?? 0,
   }
-  return context
 }
