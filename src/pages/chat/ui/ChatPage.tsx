@@ -7,13 +7,15 @@ import GoBackButton from "./GoBackButton"
 import clsx from "clsx"
 import MessageList from "./MessageList"
 import AddMessage from "./AddMessage"
+import { useIsLargeScreen } from "@/shared/utils/viewport"
 
 const ChatPage: FC = () => {
   const { phoneNumber } = useParams()
+  const isLargeScreen = useIsLargeScreen(905)
 
   return (
     <>
-      <ChatList />
+      {isLargeScreen && <ChatList />}
       <div className={styles.container}>
         <div className={styles.header}>
           <GoBackButton />

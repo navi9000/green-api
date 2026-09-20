@@ -5,6 +5,10 @@
   flex-grow: 0;
   border-right: 1px solid var(--divider-secondary);
   z-index: 1;
+  @media (max-width: 904.5px) {
+    width: 100%;
+    border-right: none;
+  }
 }
 
 .header {
